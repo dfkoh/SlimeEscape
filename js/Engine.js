@@ -1,7 +1,9 @@
 define([
-    'Base'
+    'Base',
+    'Enemy'
 ], function(
-    Base
+    Base,
+    Enemy
 ) {
 
     var MOVE_SPEED = 300;
@@ -13,6 +15,7 @@ define([
                     null, Phaser.Tilemap.TILED_JSON);
             this.load.image('game_tiles', 'assets/tileset.png');
             this.load.image('slimer', 'assets/slimer.png');
+            this.load.image('baddie', 'assets/baddie.png');
         },
 
         create: function() {
@@ -33,6 +36,9 @@ define([
 
             this.game.physics.arcade.enable(this.player);
             this.player.body.collideWorldBounds = true;
+            this.baddie = new Enemy(
+                    {x: 0, y: 500, game: this.game, player: this.player});
+            this.baddie.create();
 
             this.cursors = this.game.input.keyboard.createCursorKeys();
         },
@@ -42,6 +48,10 @@ define([
             var cursors = this.cursors;
 
             this.game.physics.arcade.collide(player, this.background);
+            this.game.physics.arcade.collide(this.baddie.sprite, this.background);
+            this.game.physics.arcade.collide(this.baddie.sprite, this.player);
+
+            this.baddie.update();
 
             player.body.velocity.x = 0;
             player.body.velocity.y = 0;
