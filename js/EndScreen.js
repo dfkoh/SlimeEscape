@@ -7,6 +7,7 @@ define([
         setup: function(options) {
             this.message = options.message;
         },
+
         create: function() {
             this.background = this.game.add.tileSprite(0, 0,
                     this.game.width, this.game.height,
@@ -18,8 +19,9 @@ define([
             this.game.input.keyboard.addCallbacks(this,
                     null, null, this.restart);
         },
+
         restart: function() {
-            this.game.state.start('main');
+            this.game.state.start('level1');
         }
     });
 });

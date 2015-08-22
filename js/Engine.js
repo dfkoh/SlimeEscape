@@ -1,26 +1,26 @@
 define([
     'Base',
     'Player',
-    'Enemy'
+    'Enemy',
+    'Door'
 ], function(
     Base,
     Player,
-    Enemy
+    Enemy,
+    Door
 ) {
 
     return Base.extend({
 
-        preload: function(){
-            this.load.tilemap('test_map', 'assets/map.json',
-                    null, Phaser.Tilemap.TILED_JSON);
-            this.load.image('game_tiles', 'assets/tileset.png');
-            this.load.image('slimer', 'assets/slimer.png');
-            this.load.image('baddie', 'assets/baddie.png');
-            this.load.spritesheet('util_tiles', 'assets/tileset.png', 32, 32);
+        setup: function setup(options) {
+            this.mapName = options.mapName;
+            this.winCallback = options.winCallback || function() {
+                this.game.state.start('win');
+            };
         },
 
         create: function() {
-            this.map = this.game.add.tilemap('test_map');
+            this.map = this.game.add.tilemap(this.mapName);
 
             //the first parameter is the tileset name as specified in Tiled, the
             //second is the key to the asset
@@ -42,12 +42,8 @@ define([
             this.game.physics.arcade.collide(this.player.sprite, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
-            this.game.physics.arcade.overlap(this.player.sprite, this.door,
-                    function () {
-                        console.log('overlap with door');
-                        this.game.state.start('win');
-                    },
-                    null, this);
+            this.game.physics.arcade.overlap(this.player.sprite, this.door.sprite,
+                this.winCallback, null, this);
 
             var enemy;
             for (var i = 0; i < this.enemies.length; i++) {
@@ -95,12 +91,14 @@ define([
 
         addExit: function () {
             var doorLoc = {x: 0, y:0};
-
             var doorLocs = this.findObjectsByType('door', 'people');
             if (doorLocs.length > 0) { doorLoc = doorLocs[0]; }
-            this.door = this.game.add.sprite(doorLoc.x, doorLoc.y,
-                                             'util_tiles', 1)
-            this.game.physics.arcade.enable(this.door);
+
+            this.door = new Door({
+                x: doorLoc.x,
+                y: doorLoc.y,
+                game: this.game
+            });
         },
 
         findObjectsByType: function findObjectsByType(type, layer) {
