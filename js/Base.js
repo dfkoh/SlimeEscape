@@ -1,8 +1,25 @@
 define([], function() {
 
-    var Base = function Base() {};
+    var Base = function Base(options) {
+        this.callIf(this.init, options);
+    };
+
+    Base.prototype.callIf = function callIf(func) {
+        if (func) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            func.apply(this, args);
+        }
+    };
 
     Base.extend = function extend() {
+        var extended = function() {};
+
+        for (var property in this) {
+            if (property) {
+                extended.prototype[property] = this[property];
+            }
+        }
+
         for (var i = 0; i < arguments.length; i++) {
             var obj = arguments[i];
 
@@ -15,13 +32,13 @@ define([], function() {
             } else {
                 for (var property in obj) {
                     if (property) {
-                        this.prototype[property] = obj[property];
+                        extended.prototype[property] = obj[property];
                     }
                 }
             }
         }
 
-        return this;
+        return extended;
     };
 
     return Base;
