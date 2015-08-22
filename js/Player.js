@@ -4,7 +4,7 @@ define([
     Base
 ) {
 
-    var MOVE_SPEED = 300;
+    var MOVE_SPEED = 200;
     // These match the frames in the sprite
     var DIRECTION = {
         none: 0,
@@ -13,6 +13,7 @@ define([
         down: 3,
         up: 4
     }
+
     return Base.extend({
 
         setup: function(options) {
