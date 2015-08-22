@@ -14,8 +14,24 @@
         {
          "draworder":"topdown",
          "height":20,
-         "name":"slime_start",
-         "objects":[],
+         "name":"people",
+         "objects":[
+                {
+                 "gid":6,
+                 "height":32,
+                 "id":13,
+                 "name":"Slime",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"slime_start",
+                 "visible":true,
+                 "width":32,
+                 "x":305,
+                 "y":247
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -23,7 +39,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":4,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "properties":
     {

@@ -32,7 +32,14 @@ define([
             //collision on wall tile
             this.map.setCollision(3, true, 'background');
 
-            this.player = this.game.add.sprite(0, 0, 'slimer');
+            var slimeStarts = this.findObjectsByType('slime_start', 'people');
+
+            var slimeStart = {x: 0, y:0};
+            if (slimeStarts.length > 0) {
+                slimeStart = slimeStarts[0];
+            }
+
+            this.player = this.game.add.sprite(slimeStart.x, slimeStart.y, 'slimer');
 
             this.game.physics.arcade.enable(this.player);
             this.player.body.collideWorldBounds = true;
@@ -68,7 +75,19 @@ define([
             else if (cursors.down.isDown) {
                 player.body.velocity.y = MOVE_SPEED;
             }
+        },
+
+        findObjectsByType: function findObjectsByType(type, layer) {
+            var result = [];
+            this.map.objects[layer].forEach(function(obj) {
+                if (obj.type === type) {
+                    obj.y -= this.map.tileHeight;
+                    result.push(obj);
+                }
+            }, this);
+            return result;
         }
+
     });
 
 });
