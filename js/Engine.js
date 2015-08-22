@@ -33,6 +33,10 @@ define([
             //collision on wall tile
             this.map.setCollision(3, true, 'background');
 
+            // Needed for addPlayer and addEnemies
+            this.enemyGroup = this.game.add.group();
+            this.enemyGroup.enableBody = true;
+
             this.addPlayer();
             this.addEnemies();
             this.addExit();
@@ -58,8 +62,6 @@ define([
             var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
                 enemy, enemyStart;
 
-            this.enemyGroup = this.game.add.group();
-            this.enemyGroup.enableBody = true;
             this.enemies = [];
             for (var i = 0; i < enemyLocs.length; i++) {
                 enemyStart = enemyLocs[i];
@@ -85,7 +87,8 @@ define([
             this.player = new Player({
                 game: this.game,
                 x: slimeStart.x,
-                y: slimeStart.y
+                y: slimeStart.y,
+                enemies: this.enemyGroup
             });
         },
 

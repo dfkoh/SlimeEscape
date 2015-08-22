@@ -17,16 +17,20 @@ define([
             this.startY = options.y;
             this.group = options.group;
             this.direction = null;
+            this.slimed = false;
 
             this.create();
         },
 
         create: function() {
             this.sprite = this.group.create(this.startX, this.startY, 'baddie');
+            this.sprite.enemy = this;
             this.sprite.body.collideWorldBounds = true;
         },
 
         update: function() {
+            if (this.slimed) { return; }
+
             var toPlayer = Phaser.Point.subtract(
                     this.player.body.position,
                     this.sprite.body.position);
@@ -91,6 +95,14 @@ define([
             return (
                 this.sprite.body.blocked[direction] ||
                 this.sprite.body.touching[direction]);
+        },
+
+        beSlimed: function() {
+            this.sprite.kill();
+            this.sprite = this.game.add.sprite(
+                    this.sprite.position.x, this.sprite.position.y, 
+                    'slimed_baddie');
+            this.slimed = true;
         },
 
         caughtPlayer: function() {

@@ -16,7 +16,10 @@ define([
 
             this.load.image('game_tiles', 'assets/tileset.png');
             this.load.spritesheet('slimer', 'assets/slimer.png', 30, 30);
+            this.load.spritesheet('slime_attack', 'assets/slime_attack.png', 
+                                  32, 32);
             this.load.image('baddie', 'assets/baddie.png');
+            this.load.image('slimed_baddie', 'assets/slimed_baddie.png');
             this.load.spritesheet('util_tiles', 'assets/tileset.png', 32, 32);
         },
 
