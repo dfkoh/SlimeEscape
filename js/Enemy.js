@@ -26,6 +26,13 @@ define([
                     this.sprite.body.position);
             this.sprite.body.velocity = toPlayer
                 .normalize().setMagnitude(BADDIE_SPEED);
+
+            this.game.physics.arcade.overlap(this.player, this.sprite, 
+                    this.caughtPlayer, null, this);
+        },
+
+        caughtPlayer: function() {
+            this.game.state.start('loss');
         }
     });
 });
