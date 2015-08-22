@@ -16,6 +16,7 @@ define([
             this.load.image('game_tiles', 'assets/tileset.png');
             this.load.image('slimer', 'assets/slimer.png');
             this.load.image('baddie', 'assets/baddie.png');
+            this.load.spritesheet('util_tiles', 'assets/tileset.png', 32, 32);
         },
 
         create: function() {
@@ -56,7 +57,6 @@ define([
 
             this.game.physics.arcade.collide(player, this.background);
             this.game.physics.arcade.collide(this.baddie.sprite, this.background);
-            this.game.physics.arcade.collide(this.baddie.sprite, this.player);
 
             this.baddie.update();
 
