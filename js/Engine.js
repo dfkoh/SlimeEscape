@@ -1,12 +1,12 @@
 define([
     'Base',
+    'Player',
     'Enemy'
 ], function(
     Base,
+    Player,
     Enemy
 ) {
-
-    var MOVE_SPEED = 300;
 
     return Base.extend({
 
@@ -36,22 +36,17 @@ define([
             this.addPlayer();
             this.addEnemies();
             this.addExit();
-
-            this.cursors = this.game.input.keyboard.createCursorKeys();
         },
 
         update: function() {
-            var player = this.player;
-            var cursors = this.cursors;
-
-            this.game.physics.arcade.collide(player, this.background);
+            this.game.physics.arcade.collide(this.player.sprite, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
-            this.game.physics.arcade.overlap(player, this.door, 
-                    function () { 
+            this.game.physics.arcade.overlap(player, this.door,
+                    function () {
                         console.log('overlap with door');
-                        this.game.state.start('win'); 
-                    }, 
+                        this.game.state.start('win');
+                    },
                     null, this);
 
             var enemy;
@@ -60,21 +55,7 @@ define([
                 enemy.update();
             }
 
-            player.body.velocity.x = 0;
-            player.body.velocity.y = 0;
-            if (cursors.left.isDown) {
-                player.body.velocity.x = -MOVE_SPEED;
-            }
-            else if (cursors.right.isDown) {
-                player.body.velocity.x = MOVE_SPEED;
-            }
-
-            if (cursors.up.isDown) {
-                player.body.velocity.y = -MOVE_SPEED;
-            }
-            else if (cursors.down.isDown) {
-                player.body.velocity.y = MOVE_SPEED;
-            }
+            this.player.update();
         },
 
         addEnemies: function addEnemies() {
@@ -90,25 +71,26 @@ define([
                     x: enemyStart.x,
                     y: enemyStart.y,
                     game: this.game,
-                    player: this.player,
+                    player: this.player.sprite,
                     group: this.enemyGroup
                 });
-                enemy.create();
                 this.enemies.push(enemy);
             }
         },
 
         addPlayer: function addPlayer() {
-            var slimeStart = {x: 0, y:0};
+            var slimeStart = {x: 0, y:0},
+                slimeLocs = this.findObjectsByType('slime_start', 'people');
 
-            var slimeLocs = this.findObjectsByType('slime_start', 'people');
             if (slimeLocs.length > 0) {
                 slimeStart = slimeLocs[0];
             }
 
-            this.player = this.game.add.sprite(slimeStart.x, slimeStart.y, 'slimer');
-            this.game.physics.arcade.enable(this.player);
-            this.player.body.collideWorldBounds = true;
+            this.player = new Player({
+                game: this.game,
+                x: slimeStart.x,
+                y: slimeStart.y
+            });
         },
 
         addExit: function () {

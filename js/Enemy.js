@@ -12,6 +12,8 @@ define([
             this.startX = options.x;
             this.startY = options.y;
             this.group = options.group;
+
+            this.create();
         },
 
         create: function() {
