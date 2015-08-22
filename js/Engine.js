@@ -21,19 +21,18 @@ define([
             this.map.addTilesetImage('tiles', 'game_tiles');
             this.background = this.map.createLayer('background');
 
-            //collision on wall tile
-            this.map.setCollision(2, true, 'background');
-
             //resizes the game world to match the layer dimensions
             this.background.resizeWorld();
 
-            this.cursors = this.game.input.keyboard.createCursorKeys();
+            //collision on wall tile
+            this.map.setCollision(3, true, 'background');
 
             this.player = this.game.add.sprite(0, 0, 'slimer');
 
             this.game.physics.arcade.enable(this.player);
-
             this.player.body.collideWorldBounds = true;
+
+            this.cursors = this.game.input.keyboard.createCursorKeys();
         },
 
         update: function() {
