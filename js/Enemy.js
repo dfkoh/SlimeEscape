@@ -26,7 +26,7 @@ define([
             this.sprite.body.velocity = toPlayer
                 .normalize().setMagnitude(BADDIE_SPEED);
 
-            this.game.physics.arcade.overlap(this.player, this.sprite, 
+            this.game.physics.arcade.overlap(this.player, this.sprite,
                     this.caughtPlayer, null, this);
         },
 

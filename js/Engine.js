@@ -45,7 +45,6 @@ define([
 
             this.game.physics.arcade.collide(player, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
-            this.game.physics.arcade.collide(this.enemyGroup, this.player);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
 
             var enemy;
