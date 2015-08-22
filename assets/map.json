@@ -10,8 +10,20 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":20,
+         "name":"slime_start",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "properties":
     {
@@ -33,6 +45,22 @@
             },
          "spacing":0,
          "tilecount":5,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":6,
+         "image":"slimer.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"Slimer",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tilecount":1,
          "tileheight":32,
          "tilewidth":32
         }],
