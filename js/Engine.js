@@ -44,11 +44,13 @@ define([
             var cursors = this.cursors;
 
             this.game.physics.arcade.collide(player, this.background);
+            this.game.physics.arcade.collide(this.enemyGroup, this.background);
+            this.game.physics.arcade.collide(this.enemyGroup, this.player);
+            this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
 
             var enemy;
             for (var i = 0; i < this.enemies.length; i++) {
                 enemy = this.enemies[i];
-                this.game.physics.arcade.collide(enemy.sprite, this.background);
                 enemy.update();
             }
 
@@ -73,6 +75,8 @@ define([
             var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
                 enemy, enemyStart;
 
+            this.enemyGroup = this.game.add.group();
+            this.enemyGroup.enableBody = true;
             this.enemies = [];
             for (var i = 0; i < enemyLocs.length; i++) {
                 enemyStart = enemyLocs[i];
@@ -80,7 +84,8 @@ define([
                     x: enemyStart.x,
                     y: enemyStart.y,
                     game: this.game,
-                    player: this.player
+                    player: this.player,
+                    group: this.enemyGroup
                 });
                 enemy.create();
                 this.enemies.push(enemy);

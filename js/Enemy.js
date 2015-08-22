@@ -11,12 +11,11 @@ define([
             this.player = options.player;
             this.startX = options.x;
             this.startY = options.y;
+            this.group = options.group;
         },
 
         create: function() {
-            this.sprite = this.game.add.sprite(this.startX, this.startY,
-                    'baddie');
-            this.game.physics.arcade.enable(this.sprite);
+            this.sprite = this.group.create(this.startX, this.startY, 'baddie');
             this.sprite.body.collideWorldBounds = true;
         },
 
