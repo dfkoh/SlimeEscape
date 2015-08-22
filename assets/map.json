@@ -17,8 +17,9 @@
          "name":"people",
          "objects":[
                 {
-                 "height":32,
-                 "id":13,
+                 "gid":7,
+                 "height":30,
+                 "id":29,
                  "name":"Slime",
                  "properties":
                     {
@@ -27,13 +28,46 @@
                  "rotation":0,
                  "type":"slime_start",
                  "visible":true,
-                 "width":32,
-                 "x":305,
+                 "width":30,
+                 "x":307,
+                 "y":279
+                }, 
+                {
+                 "gid":6,
+                 "height":30,
+                 "id":32,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":30,
+                 "x":328,
+                 "y":35
+                }, 
+                {
+                 "gid":6,
+                 "height":30,
+                 "id":33,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":30,
+                 "x":557,
                  "y":247
                 }, 
                 {
-                 "height":32,
-                 "id":15,
+                 "gid":6,
+                 "height":30,
+                 "id":34,
                  "name":"Enemy",
                  "properties":
                     {
@@ -42,13 +76,14 @@
                  "rotation":0,
                  "type":"enemy_start",
                  "visible":true,
-                 "width":32,
-                 "x":564,
-                 "y":545
+                 "width":30,
+                 "x":548,
+                 "y":575
                 }, 
                 {
-                 "height":32,
-                 "id":17,
+                 "gid":6,
+                 "height":30,
+                 "id":35,
                  "name":"Enemy",
                  "properties":
                     {
@@ -57,39 +92,25 @@
                  "rotation":0,
                  "type":"enemy_start",
                  "visible":true,
-                 "width":32,
-                 "x":576,
-                 "y":215
+                 "width":30,
+                 "x":42,
+                 "y":448
                 }, 
                 {
+                 "gid":2,
                  "height":32,
-                 "id":18,
-                 "name":"Enemy",
+                 "id":36,
+                 "name":"Door",
                  "properties":
                     {
 
                     },
                  "rotation":0,
-                 "type":"enemy_start",
+                 "type":"door",
                  "visible":true,
                  "width":32,
-                 "x":48,
-                 "y":407
-                }, 
-                {
-                 "height":32,
-                 "id":19,
-                 "name":"Enemy",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"enemy_start",
-                 "visible":true,
-                 "width":32,
-                 "x":331,
-                 "y":6
+                 "x":76,
+                 "y":153
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -98,7 +119,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":20,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "properties":
     {
@@ -125,19 +146,27 @@
         }, 
         {
          "firstgid":6,
-         "image":"slimer.png",
-         "imageheight":30,
-         "imagewidth":30,
          "margin":0,
-         "name":"Slimer",
+         "name":"people",
          "properties":
             {
 
             },
          "spacing":0,
-         "tilecount":0,
-         "tileheight":32,
-         "tilewidth":32
+         "tilecount":2,
+         "tileheight":30,
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"baddie.png"
+                },
+             "1":
+                {
+                 "image":"slimer.png"
+                }
+            },
+         "tilewidth":30
         }],
  "tilewidth":32,
  "version":1,

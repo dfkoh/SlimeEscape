@@ -35,6 +35,7 @@ define([
 
             this.addPlayer();
             this.addEnemies();
+            this.addExit();
 
             this.cursors = this.game.input.keyboard.createCursorKeys();
         },
@@ -46,6 +47,12 @@ define([
             this.game.physics.arcade.collide(player, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
+            this.game.physics.arcade.overlap(player, this.door, 
+                    function () { 
+                        console.log('overlap with door');
+                        this.game.state.start('win'); 
+                    }, 
+                    null, this);
 
             var enemy;
             for (var i = 0; i < this.enemies.length; i++) {
@@ -102,6 +109,16 @@ define([
             this.player = this.game.add.sprite(slimeStart.x, slimeStart.y, 'slimer');
             this.game.physics.arcade.enable(this.player);
             this.player.body.collideWorldBounds = true;
+        },
+
+        addExit: function () {
+            var doorLoc = {x: 0, y:0};
+
+            var doorLocs = this.findObjectsByType('door', 'people');
+            if (doorLocs.length > 0) { doorLoc = doorLocs[0]; }
+            this.door = this.game.add.sprite(doorLoc.x, doorLoc.y,
+                                             'util_tiles', 1)
+            this.game.physics.arcade.enable(this.door);
         },
 
         findObjectsByType: function findObjectsByType(type, layer) {
