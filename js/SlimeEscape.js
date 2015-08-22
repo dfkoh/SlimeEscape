@@ -6,7 +6,7 @@ define([
     Sprite
 ) {
 
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
+    var game = new Phaser.Game(800, 800, Phaser.AUTO, '');
 
     var engine = new Engine();
     var sprite = new Sprite();
