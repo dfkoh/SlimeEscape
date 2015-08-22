@@ -42,7 +42,7 @@ define([
             this.game.physics.arcade.collide(this.player.sprite, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
-            this.game.physics.arcade.overlap(player, this.door,
+            this.game.physics.arcade.overlap(this.player.sprite, this.door,
                     function () {
                         console.log('overlap with door');
                         this.game.state.start('win');
