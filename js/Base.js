@@ -4,15 +4,17 @@ define([], function() {
         this.callIf(this.init, options);
     };
 
-    Base.prototype.callIf = function callIf(func) {
+    var callIf = function (context, func) {
         if (func) {
-            var args = Array.prototype.slice.call(arguments, 1);
-            func.apply(this, args);
+            var args = Array.prototype.slice.call(arguments, 2);
+            func.apply(context, args);
         }
     };
 
     Base.extend = function extend() {
-        var extended = function() {};
+        var extended = function (options) {
+            callIf(this, this.init, options);
+        };
 
         for (var property in this) {
             if (property) {
