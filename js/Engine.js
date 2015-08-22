@@ -26,6 +26,7 @@ define([
             //second is the key to the asset
             this.map.addTilesetImage('tiles', 'game_tiles');
             this.background = this.map.createLayer('background');
+            this.slimeGroup = this.game.add.group();
 
             //resizes the game world to match the layer dimensions
             this.background.resizeWorld();
@@ -86,6 +87,7 @@ define([
 
             this.player = new Player({
                 game: this.game,
+                slimeGroup: this.slimeGroup,
                 x: slimeStart.x,
                 y: slimeStart.y,
                 enemies: this.enemyGroup

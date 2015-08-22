@@ -5,6 +5,7 @@ define([
 ) {
 
     var MOVE_SPEED = 200;
+    var SLIME_RATE = 100;
     // These match the frames in the sprite
     var DIRECTION = {
         none: 0,
@@ -21,6 +22,8 @@ define([
             this.startX = options.x;
             this.startY = options.y;
             this.enemies = options.enemies;
+            this.slimeDistance = 0;
+            this.slimeGroup = options.slimeGroup;
 
             this.create();
         },
@@ -67,11 +70,11 @@ define([
                     this.sprite.body.position, this.attackOffset);
             this.attackSprite.angle = angle;
 
-            this.attackSprite.animations.add('fire', null, 12); 
+            this.attackSprite.animations.add('fire', null, 12);
             this.attackSprite.animations.play('fire');
 
-            this.game.time.events.add(500, function() { 
-                this.attackSprite.kill(); 
+            this.game.time.events.add(500, function() {
+                this.attackSprite.kill();
                 this.attackSprite = null;
                 this.attacking = false;
             }, this);
@@ -112,13 +115,13 @@ define([
                 this.sprite.body.velocity.y = MOVE_SPEED;
             }
 
+            this.sprite.frame = this.direction;
+
             if (this.sprite.body.velocity.x === 0 &&
                 this.sprite.body.velocity.y === 0) {
-                this.direction = DIRECTION.none;
+                this.sprite.frame = DIRECTION.none;
             }
 
-            this.sprite.frame = this.direction;
-            
             if (this.attackSprite) {
                 this.attackSprite.position = Phaser.Point.add(
                         this.sprite.body.position, this.attackOffset);
@@ -127,6 +130,20 @@ define([
                         this.attackSprite, this.enemies, this.slimeEnemy,
                         null, this);
             }
+
+
+            // Update slime distance and lay down a slime
+            var distance = Phaser.Point.subtract(
+                    this.sprite.body.prev,
+                    this.sprite.body.position);
+            this.slimeDistance -= distance.getMagnitude();
+
+            if (this.slimeDistance <= 0) {
+                this.slimeGroup.create(this.sprite.body.x, this.sprite.body.y, 'slime_trail');
+                this.slimeDistance = SLIME_RATE;
+            }
         }
+
     });
+
 });
