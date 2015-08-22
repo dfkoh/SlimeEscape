@@ -12,7 +12,7 @@ define([
         right: 2,
         down: 3,
         up: 4
-    }
+    };
 
     return Base.extend({
 
