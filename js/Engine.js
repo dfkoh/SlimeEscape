@@ -32,20 +32,8 @@ define([
             //collision on wall tile
             this.map.setCollision(3, true, 'background');
 
-            var slimeStarts = this.findObjectsByType('slime_start', 'people');
-
-            var slimeStart = {x: 0, y:0};
-            if (slimeStarts.length > 0) {
-                slimeStart = slimeStarts[0];
-            }
-
-            this.player = this.game.add.sprite(slimeStart.x, slimeStart.y, 'slimer');
-
-            this.game.physics.arcade.enable(this.player);
-            this.player.body.collideWorldBounds = true;
-            this.baddie = new Enemy(
-                    {x: 0, y: 500, game: this.game, player: this.player});
-            this.baddie.create();
+            this.addPlayer();
+            this.addEnemies();
 
             this.cursors = this.game.input.keyboard.createCursorKeys();
         },
@@ -55,10 +43,14 @@ define([
             var cursors = this.cursors;
 
             this.game.physics.arcade.collide(player, this.background);
-            this.game.physics.arcade.collide(this.baddie.sprite, this.background);
-            this.game.physics.arcade.collide(this.baddie.sprite, this.player);
 
-            this.baddie.update();
+            var enemy;
+            for (var i = 0; i < this.enemies.length; i++) {
+                enemy = this.enemies[i];
+                this.game.physics.arcade.collide(enemy.sprite, this.background);
+                this.game.physics.arcade.collide(enemy.sprite, this.player);
+                enemy.update();
+            }
 
             player.body.velocity.x = 0;
             player.body.velocity.y = 0;
@@ -75,6 +67,37 @@ define([
             else if (cursors.down.isDown) {
                 player.body.velocity.y = MOVE_SPEED;
             }
+        },
+
+        addEnemies: function addEnemies() {
+            var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
+                enemy, enemyStart;
+
+            this.enemies = [];
+            for (var i = 0; i < enemyLocs.length; i++) {
+                enemyStart = enemyLocs[i];
+                enemy = new Enemy({
+                    x: enemyStart.x,
+                    y: enemyStart.y,
+                    game: this.game,
+                    player: this.player
+                });
+                enemy.create();
+                this.enemies.push(enemy);
+            }
+        },
+
+        addPlayer: function addPlayer() {
+            var slimeStart = {x: 0, y:0};
+
+            var slimeLocs = this.findObjectsByType('slime_start', 'people');
+            if (slimeLocs.length > 0) {
+                slimeStart = slimeLocs[0];
+            }
+
+            this.player = this.game.add.sprite(slimeStart.x, slimeStart.y, 'slimer');
+            this.game.physics.arcade.enable(this.player);
+            this.player.body.collideWorldBounds = true;
         },
 
         findObjectsByType: function findObjectsByType(type, layer) {

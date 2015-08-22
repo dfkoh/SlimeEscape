@@ -5,12 +5,14 @@ define([
 ) {
     var BADDIE_SPEED = 300;
     return Base.extend({
+
         init: function(options) {
             this.game = options.game;
             this.player = options.player;
             this.startX = options.x;
             this.startY = options.y;
         },
+
         create: function() {
             this.sprite = this.game.add.sprite(this.startX, this.startY,
                     'baddie');

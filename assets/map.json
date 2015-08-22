@@ -17,7 +17,6 @@
          "name":"people",
          "objects":[
                 {
-                 "gid":6,
                  "height":32,
                  "id":13,
                  "name":"Slime",
@@ -31,6 +30,66 @@
                  "width":32,
                  "x":305,
                  "y":247
+                }, 
+                {
+                 "height":32,
+                 "id":15,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":32,
+                 "x":564,
+                 "y":545
+                }, 
+                {
+                 "height":32,
+                 "id":17,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":32,
+                 "x":576,
+                 "y":215
+                }, 
+                {
+                 "height":32,
+                 "id":18,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":32,
+                 "x":48,
+                 "y":407
+                }, 
+                {
+                 "height":32,
+                 "id":19,
+                 "name":"Enemy",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"enemy_start",
+                 "visible":true,
+                 "width":32,
+                 "x":331,
+                 "y":6
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -39,7 +98,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":15,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "properties":
     {
@@ -67,8 +126,8 @@
         {
          "firstgid":6,
          "image":"slimer.png",
-         "imageheight":32,
-         "imagewidth":32,
+         "imageheight":30,
+         "imagewidth":30,
          "margin":0,
          "name":"Slimer",
          "properties":
@@ -76,7 +135,7 @@
 
             },
          "spacing":0,
-         "tilecount":1,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }],
