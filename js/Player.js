@@ -38,8 +38,7 @@ define([
             if (this.cursors.left.isDown) {
                 this.direction = DIRECTION.left;
                 this.sprite.body.velocity.x = -MOVE_SPEED;
-            }
-            else if (this.cursors.right.isDown) {
+            } else if (this.cursors.right.isDown) {
                 this.direction = DIRECTION.right;
                 this.sprite.body.velocity.x = MOVE_SPEED;
             }
@@ -47,11 +46,16 @@ define([
             if (this.cursors.up.isDown) {
                 this.direction = DIRECTION.up;
                 this.sprite.body.velocity.y = -MOVE_SPEED;
-            }
-            else if (this.cursors.down.isDown) {
+            } else if (this.cursors.down.isDown) {
                 this.direction = DIRECTION.down;
                 this.sprite.body.velocity.y = MOVE_SPEED;
             }
+
+            if (this.sprite.body.velocity.x === 0 &&
+                this.sprite.body.velocity.y === 0) {
+                this.direction = DIRECTION.none;
+            }
+
             this.sprite.frame = this.direction;
         }
     });

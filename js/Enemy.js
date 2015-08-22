@@ -39,8 +39,7 @@ define([
             // If you're out of range, just wander around
             } else {
 
-                if (!this.direction ||
-                    this.sprite.body.blocked[this.direction]) {
+                if (!this.direction || this.isColliding()) {
                     this.changeDirection();
                 }
 
@@ -74,7 +73,7 @@ define([
 
             for (var i = 0; i < DIRECTIONS.length; i++) {
                 currentDirection = DIRECTIONS[i];
-                if (!this.sprite.body.blocked[currentDirection]) {
+                if (!this.isColliding(currentDirection)) {
                     availableDirections.push(currentDirection);
                 }
             }
@@ -85,6 +84,13 @@ define([
             } else if (availableDirections.length === 1) {
                 this.direction = availableDirections[0];
             }
+        },
+
+        isColliding: function isColliding(direction) {
+            direction = direction || this.direction;
+            return (
+                this.sprite.body.blocked[direction] ||
+                this.sprite.body.touching[direction]);
         },
 
         caughtPlayer: function() {
