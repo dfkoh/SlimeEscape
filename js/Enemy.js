@@ -6,7 +6,7 @@ define([
     var BADDIE_SPEED = 300;
     return Base.extend({
 
-        init: function(options) {
+        setup: function(options) {
             this.game = options.game;
             this.player = options.player;
             this.startX = options.x;

@@ -1,7 +1,7 @@
 define([], function() {
 
     var Base = function Base(options) {
-        this.callIf(this.init, options);
+        this.callIf(this.setup, options);
     };
 
     var callIf = function (context, func) {
@@ -13,7 +13,7 @@ define([], function() {
 
     Base.extend = function extend() {
         var extended = function (options) {
-            callIf(this, this.init, options);
+            callIf(this, this.setup, options);
         };
 
         for (var property in this) {

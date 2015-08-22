@@ -7,7 +7,7 @@ define([
     var MOVE_SPEED = 300;
     return Base.extend({
 
-        init: function(options) {
+        setup: function(options) {
             this.game = options.game;
             this.startX = options.x;
             this.startY = options.y;
