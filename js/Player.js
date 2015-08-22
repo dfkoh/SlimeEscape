@@ -30,8 +30,6 @@ define([
                 return;
             }
 
-            console.log('attacking!');
-
             this.attacking = true;
 
             // right is the default
@@ -54,7 +52,6 @@ define([
             var attackPoint = Phaser.Point.add(
                     this.sprite.body.position,
                     this.attackOffset);
-            console.log(this.attackPoint);
 
             this.attackSprite = this.game.add.sprite(
                 attackPoint.x, attackPoint.y, 'slime_attack');
@@ -67,14 +64,10 @@ define([
 
             this.attackSprite.angle = angle;
 
-            console.log(this.attackSprite.position);
-            console.log(this.attackSprite.angle);
-
             this.attackSprite.animations.add('fire', null, 12); 
             this.attackSprite.animations.play('fire');
 
             this.game.time.events.add(500, function() { 
-                console.log('done attacking.');
                 this.attackSprite.kill(); 
                 this.attackSprite = null;
                 this.attacking = false;
