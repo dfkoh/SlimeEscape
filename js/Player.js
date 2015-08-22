@@ -53,15 +53,18 @@ define([
                     this.sprite.body.position,
                     this.attackOffset);
 
-            this.attackSprite = this.game.add.sprite(
-                attackPoint.x, attackPoint.y, 'slime_attack');
-
-
+            this.attackSprite = this.game.add.sprite(0, 0, 'slime_attack');
             this.game.physics.arcade.enable(this.attackSprite);
-            this.attackSprite.anchor.setTo(0.5, 0.5);
-            this.attackSprite.position.x += this.attackSprite.width / 2;
-            this.attackSprite.position.y += this.attackSprite.height / 2;
 
+            this.attackSprite.anchor.setTo(0.5, 0.5);
+
+            // Account for the fact that the anchor is in the middle
+            this.attackOffset.x += this.attackSprite.width / 2;
+            this.attackOffset.y += this.attackSprite.width / 2;
+
+            // Position and rotate the attackSprite
+            this.attackSprite.position = Phaser.Point.add(
+                    this.sprite.body.position, this.attackOffset);
             this.attackSprite.angle = angle;
 
             this.attackSprite.animations.add('fire', null, 12); 
@@ -119,8 +122,6 @@ define([
             if (this.attackSprite) {
                 this.attackSprite.position = Phaser.Point.add(
                         this.sprite.body.position, this.attackOffset);
-                this.attackSprite.position.x += this.attackSprite.width / 2;
-                this.attackSprite.position.y += this.attackSprite.height / 2;
 
                 this.game.physics.arcade.overlap(
                         this.attackSprite, this.enemies, this.slimeEnemy,
