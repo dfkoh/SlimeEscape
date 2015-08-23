@@ -17,7 +17,16 @@ define([], function() {
             2: 'right',
             3: 'down',
             4: 'up'
-        }
+        },
+
+        SLIME_SPEED: 100,
+        DUDE_SPEED: 200,
+
+        ENEMY_RUN_SPEED: 150,
+        ENEMY_WALK_SPEED: 60,
+        ENEMY_TRIGGER_DISTANCE: 150,
+        ANTI_VIBRATE_THRESHOLD: 0
+
 
     }
 

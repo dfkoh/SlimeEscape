@@ -5,10 +5,6 @@ define([
     Position,
     Constants
 ) {
-    var RUN_SPEED = 200,
-        WALK_SPEED = 70,
-        TRIGGER_DISTANCE = 200,
-        ANTI_VIBRATE_THRESHOLD = 10;
 
     return Position.extend({
 
@@ -37,7 +33,7 @@ define([
                     this.sprite.body.position);
 
             // If you're in range, run at the player!
-            if (toPlayer.getMagnitude() < TRIGGER_DISTANCE || this.reanimated) {
+            if (toPlayer.getMagnitude() < Constants.ENEMY_TRIGGER_DISTANCE || this.reanimated) {
                 this.onRun(toPlayer);
             } else {
             // If you're out of range, just wander around
@@ -81,7 +77,7 @@ define([
                 collision = true;
             }
 
-            toPlayer.setMagnitude(RUN_SPEED);
+            toPlayer.setMagnitude(Constants.ENEMY_RUN_SPEED);
 
             /**
              * Crazy hack to keep enemies from vibrating when there's
@@ -98,7 +94,7 @@ define([
                     this.sprite.body.velocity);
 
                 if (collision && (toPlayer.x || toPlayer.y) &&
-                    delayedAdd.getMagnitude() < ANTI_VIBRATE_THRESHOLD) {
+                    delayedAdd.getMagnitude() < Constants.ANTI_VIBRATE_THRESHOLD) {
                     // Don't move, you would be vibrating otherwise
                     this.sprite.body.velocity.x = 0;
                     this.sprite.body.velocity.y = 0;
@@ -121,20 +117,20 @@ define([
 
             switch (this.direction) {
                 case Constants.DIRECTION.LEFT:
-                    this.sprite.body.velocity.x = -WALK_SPEED;
+                    this.sprite.body.velocity.x = -Constants.ENEMY_WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
                     break;
                 case Constants.DIRECTION.RIGHT:
-                    this.sprite.body.velocity.x = WALK_SPEED;
+                    this.sprite.body.velocity.x = Constants.ENEMY_WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
                     break;
                 case Constants.DIRECTION.DOWN:
                     this.sprite.body.velocity.x = 0;
-                    this.sprite.body.velocity.y = WALK_SPEED;
+                    this.sprite.body.velocity.y = Constants.ENEMY_WALK_SPEED;
                     break;
                 case Constants.DIRECTION.UP:
                     this.sprite.body.velocity.x = 0;
-                    this.sprite.body.velocity.y = -WALK_SPEED;
+                    this.sprite.body.velocity.y = -Constants.ENEMY_WALK_SPEED;
                     break;
             }
 

@@ -3,13 +3,15 @@ define([
     'Slimer',
     'Dude',
     'Enemy',
-    'Door'
+    'Door',
+    'Constants'
 ], function(
     Base,
     Slimer,
     Dude,
     Enemy,
-    Door
+    Door,
+    Constants
 ) {
 
     return Base.extend({
@@ -87,13 +89,11 @@ define([
             this.enemyGroup.enableBody = true;
 
             this.enemies = this.slimedEnemies;
-            console.log('dude before creation: ' + this.dude);
             this.addDude();
-            console.log('dude after creation: ' + this.dude);
+
             for (var i = 0; i < this.enemies.length; i++) {
                 var enemy = this.enemies[i];
                 enemy.reanimate(this.dude);
-                console.log('enemy player after dudification: ' + enemy.player);
                 this.enemyGroup.add(enemy.sprite);
             }
 
@@ -110,6 +110,7 @@ define([
                     x: enemyStart.x,
                     y: enemyStart.y,
                     game: this.game,
+                    moveSpeed: this.moveSpeed,
                     player: this.slimer.sprite,
                     group: this.enemyGroup,
                     slimedEnemies: this.slimedEnemies
@@ -129,6 +130,7 @@ define([
             this.slimer = new Slimer({
                 game: this.game,
                 slimeGroup: this.slimeGroup,
+                moveSpeed: Constants.SLIME_SPEED,
                 x: slimeStart.x,
                 y: slimeStart.y,
                 enemies: this.enemyGroup
@@ -146,26 +148,9 @@ define([
             this.dude = new Dude({
                 game: this.game,
                 slimeGroup: this.slimeGroup,
+                moveSpeed: Constants.DUDE_SPEED,
                 x: dudeStart.x,
                 y: dudeStart.y,
-                enemies: this.enemyGroup
-            });
-        },
-
-
-        addSlimer: function addSlimer() {
-            var slimeStart = {x: 0, y:0},
-                slimeLocs = this.findObjectsByType('slime_start', 'people');
-
-            if (slimeLocs.length > 0) {
-                slimeStart = slimeLocs[0];
-            }
-
-            this.slimer = new Slimer({
-                game: this.game,
-                slimeGroup: this.slimeGroup,
-                x: slimeStart.x,
-                y: slimeStart.y,
                 enemies: this.enemyGroup
             });
         },

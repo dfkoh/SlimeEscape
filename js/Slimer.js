@@ -7,7 +7,7 @@ define([
 ) {
 
     var SLIME_RATE = 80,
-        MOVE_SPEED = 200;
+        MOVE_SPEED = 80;
     // These match the frames in the sprite
 
     return Player.extend({
