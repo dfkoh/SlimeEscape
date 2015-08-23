@@ -1,28 +1,23 @@
 define([
-    'Base'
+    'Position',
+    'Constants'
 ], function(
-    Base
+    Position,
+    Constants
 ) {
     var RUN_SPEED = 200,
         WALK_SPEED = 70,
-        TRIGGER_DISTANCE = 200,
-        DIRECTIONS = ['left', 'right', 'up', 'down'];
+        TRIGGER_DISTANCE = 200;
 
-    return Base.extend({
+    return Position.extend({
 
         setup: function(options) {
-            this.game = options.game;
+            Position.prototype.setup.apply(this, arguments);
+
             this.player = options.player;
-            this.startX = options.x;
-            this.startY = options.y;
             this.group = options.group;
-            this.direction = null;
             this.slimed = false;
 
-            this.create();
-        },
-
-        create: function() {
             this.sprite = this.group.create(this.startX, this.startY, 'baddie');
             this.sprite.enemy = this;
             this.sprite.body.collideWorldBounds = true;
@@ -52,24 +47,22 @@ define([
             toPlayer.normalize();
             var vx = toPlayer.x;
             var vy = toPlayer.y;
+
             if (Math.abs(vx) > Math.abs(vy)) {
                 if (vx > 0) {
-                    // right
-                    this.sprite.frame = 1;
+                    this.direction = Constants.DIRECTION.RIGHT;
                 } else {
-                    // left
-                    this.sprite.frame = 2;
+                    this.direction = Constants.DIRECTION.LEFT;
                 }
             } else {
                 if (vy > 0) {
-                    // up
-                    this.sprite.frame = 3;
+                    this.direction = Constants.DIRECTION.UP;
                 } else {
-                    // down
-                    this.sprite.frame = 4;
+                    this.direction = Constants.DIRECTION.DOWN;
                 }
-
             }
+
+            this.sprite.frame = this.direction;
 
             if ((toPlayer.x < 0 && this.isColliding('left')) ||
                     (toPlayer.x > 0 && this.isColliding('right'))) {
@@ -91,37 +84,39 @@ define([
             }
 
             switch (this.direction) {
-                case 'left':
+                case Constants.DIRECTION.LEFT:
                     this.sprite.body.velocity.x = -WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
-                    this.sprite.frame = 2;
                     break;
-                case 'right':
+                case Constants.DIRECTION.RIGHT:
                     this.sprite.body.velocity.x = WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
-                    this.sprite.frame = 1;
                     break;
-                case 'down':
+                case Constants.DIRECTION.DOWN:
                     this.sprite.body.velocity.x = 0;
                     this.sprite.body.velocity.y = WALK_SPEED;
-                    this.sprite.frame = 3;
                     break;
-                case 'up':
+                case Constants.DIRECTION.UP:
                     this.sprite.body.velocity.x = 0;
                     this.sprite.body.velocity.y = -WALK_SPEED;
-                    this.sprite.frame = 4;
                     break;
             }
+
+            this.sprite.frame = this.direction;
         },
 
         changeDirection: function() {
-            var currentDirection,
+            var direction,
                 availableDirections = [];
 
-            for (var i = 0; i < DIRECTIONS.length; i++) {
-                currentDirection = DIRECTIONS[i];
-                if (!this.isColliding(currentDirection)) {
-                    availableDirections.push(currentDirection);
+            for (var directionName in Constants.DIRECTION) {
+                if (directionName === "NONE") {
+                    continue;
+                }
+
+                direction = Constants.DIRECTION[directionName];
+                if (!this.isColliding(Constants.DIRECTION_STR[direction])) {
+                    availableDirections.push(direction);
                 }
             }
 
@@ -134,7 +129,7 @@ define([
         },
 
         isColliding: function isColliding(direction) {
-            direction = direction || this.direction;
+            direction = direction || Constants.DIRECTION_STR[this.direction];
             return (
                 this.sprite.body.blocked[direction] ||
                 this.sprite.body.touching[direction]);
