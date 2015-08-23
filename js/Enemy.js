@@ -141,10 +141,12 @@ define([
         },
 
         beSlimed: function() {
+            var frame = this.sprite.frame;
             this.sprite.kill();
             this.sprite = this.game.add.sprite(
                     this.sprite.position.x, this.sprite.position.y,
                     'slimed_baddie');
+            this.sprite.frame = frame;
             this.slimed = true;
         },
 

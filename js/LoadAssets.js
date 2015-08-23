@@ -21,8 +21,9 @@ define([
 
             this.load.image('slime_trail', 'assets/slime_trail.png');
             this.load.spritesheet('baddie', 'assets/baddie.png', 30, 30);
+            this.load.spritesheet('slimed_baddie', 'assets/slimed_baddie.png',
+                    30, 30);
 
-            this.load.image('slimed_baddie', 'assets/slimed_baddie.png');
             this.load.spritesheet('util_tiles', 'assets/tileset.png', 32, 32);
         },
 
