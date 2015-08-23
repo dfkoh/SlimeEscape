@@ -1,11 +1,13 @@
 define([
     'Base',
     'Slimer',
+    'Dude',
     'Enemy',
     'Door'
 ], function(
     Base,
     Slimer,
+    Dude,
     Enemy,
     Door
 ) {
@@ -18,7 +20,6 @@ define([
                 this.game.state.start('win');
             };
             this.slimedEnemies = [];
-            this.chasingSlimer = false;
         },
 
         create: function() {
@@ -43,14 +44,24 @@ define([
             this.addSlimer();
             this.addEnemies();
             this.addExit();
+            this.dude = null;
         },
 
         update: function() {
-            this.game.physics.arcade.collide(this.slimer.sprite, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
-            this.game.physics.arcade.overlap(this.slimer.sprite, this.door.sprite,
-                this.winCallback, null, this);
+
+            if (this.slimer) {
+                this.game.physics.arcade.collide(this.slimer.sprite, this.background);
+                this.game.physics.arcade.overlap(this.slimer.sprite, this.door.sprite,
+                    this.slimerFinish, null, this);
+            }
+
+            if (this.dude) {
+                this.game.physics.arcade.collide(this.dude.sprite, this.background);
+                this.game.physics.arcade.overlap(this.dude.sprite, this.door.sprite,
+                    this.winCallback, null, this);
+            }
 
             var enemy;
             for (var i = 0; i < this.enemies.length; i++) {
@@ -58,13 +69,30 @@ define([
                 enemy.update();
             }
 
-            this.slimer.update();
+            if (this.slimer) { this.slimer.update(); }
+            if (this.dude) { this.dude.update(); }
         },
 
         slimerFinish: function() {
-            // TODO: remove unslimed enemies
-            // TODO: activate slimed enemies
-        }
+            this.slimer.sprite.destroy();
+            this.slimer = null;
+            this.enemyGroup.destroy();
+
+            this.enemyGroup = this.game.add.group();
+            this.enemyGroup.enableBody = true;
+
+            this.enemies = this.slimedEnemies;
+            console.log('dude before creation: ' + this.dude);
+            this.addDude();
+            console.log('dude after creation: ' + this.dude);
+            for (var i = 0; i < this.enemies.length; i++) {
+                var enemy = this.enemies[i];
+                enemy.reanimate(this.dude);
+                console.log('enemy player after dudification: ' + enemy.player);
+                this.enemyGroup.add(enemy.sprite);
+            }
+
+        },
 
         addEnemies: function addEnemies() {
             var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
@@ -84,6 +112,41 @@ define([
                 this.enemies.push(enemy);
             }
         },
+
+        addSlimer: function addSlimer() {
+            var slimeStart = {x: 0, y:0},
+                slimeLocs = this.findObjectsByType('slime_start', 'people');
+
+            if (slimeLocs.length > 0) {
+                slimeStart = slimeLocs[0];
+            }
+
+            this.slimer = new Slimer({
+                game: this.game,
+                slimeGroup: this.slimeGroup,
+                x: slimeStart.x,
+                y: slimeStart.y,
+                enemies: this.enemyGroup
+            });
+        },
+
+        addDude: function addDude() {
+            var dudeStart = {x: 0, y:0},
+                dudeLocs = this.findObjectsByType('slime_start', 'people');
+
+            if (dudeLocs.length > 0) {
+                dudeStart = dudeLocs[0];
+            }
+
+            this.dude = new Dude({
+                game: this.game,
+                slimeGroup: this.slimeGroup,
+                x: dudeStart.x,
+                y: dudeStart.y,
+                enemies: this.enemyGroup
+            });
+        },
+
 
         addSlimer: function addSlimer() {
             var slimeStart = {x: 0, y:0},
@@ -124,6 +187,7 @@ define([
             }, this);
             return result;
         }
+
 
     });
 
