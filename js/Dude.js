@@ -14,7 +14,6 @@ define([
         setup: function(options) {
             Player.prototype.setup.apply(this, arguments);
 
-            this.enemies = options.enemies;
             this.slimeGroup = options.slimeGroup;
             this.onSlime = null;
 
@@ -30,14 +29,14 @@ define([
 
         update: function update() {
             this.moveSpeed = MOVE_SPEED;
-            this.game.physics.arcade.overlap(this.sprite, this.slimeGroup, 
-                    function(dude, slime) { this.onSlime = slime; }, 
+            this.game.physics.arcade.overlap(this.sprite, this.slimeGroup,
+                    function(dude, slime) { this.onSlime = slime; },
                     null, this);
 
-            if (this.onSlime && !this.stillOnSlime()) { 
+            if (this.onSlime && !this.stillOnSlime()) {
                 this.onSlime = null;
             }
-                
+
             if (this.onSlime) {
                 this.moveSpeed = SLIME_MOVE_SPEED;
             }

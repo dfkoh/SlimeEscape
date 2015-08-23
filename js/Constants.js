@@ -20,12 +20,21 @@ define([], function() {
         },
 
         SLIME_SPEED: 100,
-        DUDE_SPEED: 200,
+        DUDE_SPEED: 220,
 
-        ENEMY_RUN_SPEED: 150,
-        ENEMY_WALK_SPEED: 60,
+        ENEMY_RUN: 150,
+        ENEMY_WALK: 60,
         ENEMY_TRIGGER_DISTANCE: 150,
-        ANTI_VIBRATE_THRESHOLD: 0
+
+        ANTI_VIBRATE_THRESHOLD: 0,
+
+        LAB_WORKER_RUN: 0,
+        LAB_WORKER_WALK: 0,
+        LAB_WORKER_TRIGGER: 150,
+
+        SLIME_ZOMBIE_RUN: 180,
+        SLIME_ZOMBIE_WALK: 20,
+        SLIME_ZOMBIE_TRIGGER: 220
 
 
     }

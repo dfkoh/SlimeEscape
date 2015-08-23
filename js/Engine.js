@@ -2,14 +2,14 @@ define([
     'Base',
     'Slimer',
     'Dude',
-    'Enemy',
+    'LabWorker',
     'Door',
     'Constants'
 ], function(
     Base,
     Slimer,
     Dude,
-    Enemy,
+    LabWorker,
     Door,
     Constants
 ) {
@@ -22,7 +22,6 @@ define([
             this.winCallback = options.winCallback || function() {
                 this.game.state.start('win');
             };
-            this.slimedEnemies = [];
         },
 
         create: function() {
@@ -33,8 +32,15 @@ define([
             this.map.addTilesetImage('new_tiles', 'game_tiles');
             this.floor = this.map.createLayer('background');
             this.walls = this.map.createLayer('walls');
+
             this.slimeGroup = this.game.add.group();
             this.slimeGroup.enableBody = true;
+
+            this.labGroup = this.game.add.group();
+            this.labGroup.enableBody = true;
+
+            this.zombieGroup = this.game.add.group();
+            this.zombieGroup.enableBody = true;
 
             //resizes the game world to match the layer dimensions
             this.floor.resizeWorld();
@@ -43,10 +49,6 @@ define([
             //collision on wall tile
             this.map.setCollisionByExclusion([], true, 'walls');
 
-            // Needed for addPlayer and addEnemies
-            this.enemyGroup = this.game.add.group();
-            this.enemyGroup.enableBody = true;
-
             this.addSlimer();
             this.addEnemies();
             this.addExit();
@@ -54,8 +56,13 @@ define([
         },
 
         update: function() {
-            this.game.physics.arcade.collide(this.enemyGroup, this.walls);
-            this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
+            this.game.physics.arcade.collide(this.labGroup, this.walls);
+            this.game.physics.arcade.collide(this.labGroup, this.labGroup);
+
+            this.game.physics.arcade.collide(this.zombieGroup, this.walls);
+            this.game.physics.arcade.collide(this.zombieGroup, this.zombieGroup);
+
+            this.game.physics.arcade.collide(this.labGroup, this.zombieGroup);
 
             if (this.slimer) {
                 this.game.physics.arcade.collide(this.slimer.sprite, this.walls);
@@ -71,10 +78,11 @@ define([
                         }, null, this);
             }
 
-            var enemy;
-            for (var i = 0; i < this.enemies.length; i++) {
-                enemy = this.enemies[i];
-                enemy.update();
+            var enemies = this.getGroupChildren(this.labGroup);
+            var enemies = enemies.concat(this.getGroupChildren(this.zombieGroup));
+
+            for (var i = 0; i < enemies.length; i++) {
+                enemies[i].update();
             }
 
             if (this.slimer) { this.slimer.update(); }
@@ -84,18 +92,17 @@ define([
         slimerFinish: function() {
             this.slimer.sprite.destroy();
             this.slimer = null;
-            this.enemyGroup.destroy();
 
-            this.enemyGroup = this.game.add.group();
-            this.enemyGroup.enableBody = true;
+            var labWorkers = this.getGroupChildren(this.labGroup);
+            for (var i = 0; i < labWorkers.length; i++) {
+                labWorkers[i].player = null;
+            }
 
-            this.enemies = this.slimedEnemies;
             this.addDude();
 
-            for (var i = 0; i < this.enemies.length; i++) {
-                var enemy = this.enemies[i];
-                enemy.reanimate(this.dude);
-                this.enemyGroup.add(enemy.sprite);
+            var zombies = this.getGroupChildren(this.zombieGroup);
+            for (var i = 0; i < zombies.length; i++) {
+                zombies[i].player = this.dude.sprite;
             }
         },
 
@@ -103,19 +110,18 @@ define([
             var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
                 enemy, enemyStart;
 
-            this.enemies = [];
             for (var i = 0; i < enemyLocs.length; i++) {
                 enemyStart = enemyLocs[i];
-                enemy = new Enemy({
+                enemy = new LabWorker({
                     x: enemyStart.x,
                     y: enemyStart.y,
                     game: this.game,
-                    moveSpeed: this.moveSpeed,
+                    runSpeed: Constants.LAB_WORKER_RUN,
+                    walkSpeed: Constants.LAB_WORKER_WALK,
                     player: this.slimer.sprite,
-                    group: this.enemyGroup,
-                    slimedEnemies: this.slimedEnemies
+                    group: this.labGroup,
+                    zombieGroup: this.zombieGroup
                 });
-                this.enemies.push(enemy);
             }
         },
 
@@ -133,7 +139,7 @@ define([
                 moveSpeed: Constants.SLIME_SPEED,
                 x: slimeStart.x,
                 y: slimeStart.y,
-                enemies: this.enemyGroup
+                enemies: this.labGroup
             });
         },
 
@@ -150,8 +156,7 @@ define([
                 slimeGroup: this.slimeGroup,
                 moveSpeed: Constants.DUDE_SPEED,
                 x: dudeStart.x,
-                y: dudeStart.y,
-                enemies: this.enemyGroup
+                y: dudeStart.y
             });
         },
 
@@ -167,6 +172,12 @@ define([
             });
         },
 
+        getGroupChildren: function getGroupChildren(group) {
+            return group.children.map(function (sprite) {
+                return sprite.enemy;
+            });
+        },
+
         findObjectsByType: function findObjectsByType(type, layer) {
             var result = [];
             this.map.objects[layer].forEach(function(obj) {
@@ -177,7 +188,6 @@ define([
             }, this);
             return result;
         }
-
 
     });
 

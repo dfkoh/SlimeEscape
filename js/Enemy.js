@@ -11,37 +11,10 @@ define([
         setup: function(options) {
             Position.prototype.setup.apply(this, arguments);
 
-            this.player = options.player;
+            this.runSpeed = options.runSpeed || Constants.ENEMY_RUN;
+            this.walkSpeed = options.walkSpeed || Constants.ENEMY_WALK;
+            this.player = options.player || null;
             this.group = options.group;
-            this.slimedEnemies = options.slimedEnemies;
-            this.slimed = false;
-            this.reanimated = false;
-
-            this.sprite = this.group.create(this.startX, this.startY, 'baddie');
-            this.sprite.enemy = this;
-            this.sprite.body.collideWorldBounds = true;
-            this.sprite.frame = 0;
-
-            this.delayedRunVelocity = null;
-        },
-
-        update: function update() {
-            if (this.slimed && !this.reanimated) { return; }
-
-            var toPlayer = Phaser.Point.subtract(
-                    this.player.body.position,
-                    this.sprite.body.position);
-
-            // If you're in range, run at the player!
-            if (toPlayer.getMagnitude() < Constants.ENEMY_TRIGGER_DISTANCE || this.reanimated) {
-                this.onRun(toPlayer);
-            } else {
-            // If you're out of range, just wander around
-                this.onWalk();
-            }
-
-            this.game.physics.arcade.overlap(this.player, this.sprite,
-                    this.caughtPlayer, null, this);
         },
 
         onRun: function onRun(toPlayer) {
@@ -77,7 +50,7 @@ define([
                 collision = true;
             }
 
-            toPlayer.setMagnitude(Constants.ENEMY_RUN_SPEED);
+            toPlayer.setMagnitude(this.runSpeed);
 
             /**
              * Crazy hack to keep enemies from vibrating when there's
@@ -117,20 +90,20 @@ define([
 
             switch (this.direction) {
                 case Constants.DIRECTION.LEFT:
-                    this.sprite.body.velocity.x = -Constants.ENEMY_WALK_SPEED;
+                    this.sprite.body.velocity.x = -this.walkSpeed;
                     this.sprite.body.velocity.y = 0;
                     break;
                 case Constants.DIRECTION.RIGHT:
-                    this.sprite.body.velocity.x = Constants.ENEMY_WALK_SPEED;
+                    this.sprite.body.velocity.x = this.walkSpeed;
                     this.sprite.body.velocity.y = 0;
                     break;
                 case Constants.DIRECTION.DOWN:
                     this.sprite.body.velocity.x = 0;
-                    this.sprite.body.velocity.y = Constants.ENEMY_WALK_SPEED;
+                    this.sprite.body.velocity.y = this.walkSpeed;
                     break;
                 case Constants.DIRECTION.UP:
                     this.sprite.body.velocity.x = 0;
-                    this.sprite.body.velocity.y = -Constants.ENEMY_WALK_SPEED;
+                    this.sprite.body.velocity.y = -this.walkSpeed;
                     break;
             }
 
@@ -163,29 +136,18 @@ define([
         isColliding: function isColliding(direction) {
             direction = direction || Constants.DIRECTION_STR[this.direction];
             return (
+                this.sprite.body && (
                 this.sprite.body.blocked[direction] ||
-                this.sprite.body.touching[direction]);
+                this.sprite.body.touching[direction]));
         },
 
         beSlimed: function() {
-            var frame = this.sprite.frame;
-            this.sprite.kill();
-            this.sprite = this.game.add.sprite(
-                    this.sprite.position.x, this.sprite.position.y,
-                    'slimed_baddie');
-            this.sprite.frame = frame;
-            this.slimed = true;
-            this.slimedEnemies.push(this);
-        },
-
-        reanimate: function(player) {
-            this.player = player.sprite;
-            this.reanimated = true;
-            //RUN_SPEED = 300;
+            // no-op, override this for slime functionality
         },
 
         caughtPlayer: function() {
             this.game.state.start('loss');
         }
+
     });
 });
