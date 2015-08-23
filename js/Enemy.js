@@ -7,7 +7,8 @@ define([
 ) {
     var RUN_SPEED = 200,
         WALK_SPEED = 70,
-        TRIGGER_DISTANCE = 200;
+        TRIGGER_DISTANCE = 200,
+        ANTI_VIBRATE_THRESHOLD = 10;
 
     return Position.extend({
 
@@ -22,6 +23,8 @@ define([
             this.sprite.enemy = this;
             this.sprite.body.collideWorldBounds = true;
             this.sprite.frame = 0;
+
+            this.delayedRunVelocity = null;
         },
 
         update: function update() {
@@ -64,18 +67,49 @@ define([
 
             this.sprite.frame = this.direction;
 
+            var collision = false;
             if ((toPlayer.x < 0 && this.isColliding('left')) ||
                     (toPlayer.x > 0 && this.isColliding('right'))) {
                 toPlayer.x = 0;
+                collision = true;
             }
-
             if ((toPlayer.y < 0 && this.isColliding('up')) ||
                     (toPlayer.y > 0 && this.isColliding('down'))) {
                 toPlayer.y = 0;
+                collision = true;
             }
 
-            this.sprite.body.velocity = toPlayer
-                .setMagnitude(RUN_SPEED);
+            toPlayer.setMagnitude(RUN_SPEED);
+
+            /**
+             * Crazy hack to keep enemies from vibrating when there's
+             * a wall between you and them. If something is crazy
+             * glitchy, this is probably why. Here's the logic:
+             *
+             * If you're colliding with one wall but not the other,
+             * and your last update velocity is almost exactly opposite
+             * your current velocity, then just don't move.
+             */
+            if (this.delayedRunVelocity) {
+                var delayedAdd = Phaser.Point.add(
+                    this.delayedRunVelocity,
+                    this.sprite.body.velocity);
+
+                if (collision && (toPlayer.x || toPlayer.y) &&
+                    delayedAdd.getMagnitude() < ANTI_VIBRATE_THRESHOLD) {
+                    // Don't move, you would be vibrating otherwise
+                    this.sprite.body.velocity.x = 0;
+                    this.sprite.body.velocity.y = 0;
+
+                } else {
+                    this.sprite.body.velocity = toPlayer;
+                    this.delayedRunVelocity = this.sprite.body.velocity;
+                }
+
+            } else {
+                this.sprite.body.velocity = toPlayer;
+                this.delayedRunVelocity = this.sprite.body.velocity;
+            }
          },
 
         onWalk: function onWalk() {
