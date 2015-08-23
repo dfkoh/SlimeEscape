@@ -1,8 +1,6 @@
 define([], function() {
 
-    var Base = function Base(options) {
-        this.callIf(this.setup, options);
-    };
+    var Base = function Base(options) {};
 
     var callIf = function (context, func) {
         if (func) {
@@ -18,7 +16,13 @@ define([], function() {
 
         for (var property in this) {
             if (property) {
-                extended.prototype[property] = this[property];
+                extended[property] = this[property];
+            }
+        }
+
+        for (var property in this.prototype) {
+            if (property) {
+                extended.prototype[property] = this.prototype[property];
             }
         }
 
@@ -39,6 +43,8 @@ define([], function() {
                 }
             }
         }
+
+        console.log(extended.prototype);
 
         return extended;
     };

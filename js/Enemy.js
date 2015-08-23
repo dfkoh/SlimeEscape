@@ -1,33 +1,31 @@
 define([
-    'Base'
+    'Position',
+    'Constants'
 ], function(
-    Base
+    Position,
+    Constants
 ) {
     var RUN_SPEED = 200,
         WALK_SPEED = 70,
         TRIGGER_DISTANCE = 200,
-        DIRECTIONS = ['left', 'right', 'up', 'down'];
+        ANTI_VIBRATE_THRESHOLD = 10;
 
-    return Base.extend({
+    return Position.extend({
 
         setup: function(options) {
-            this.game = options.game;
+            Position.prototype.setup.apply(this, arguments);
+
             this.player = options.player;
-            this.startX = options.x;
-            this.startY = options.y;
             this.group = options.group;
-            this.direction = null;
             this.slimedEnemies = options.slimedEnemies;
             this.slimed = false;
 
-            this.create();
-        },
-
-        create: function() {
             this.sprite = this.group.create(this.startX, this.startY, 'baddie');
             this.sprite.enemy = this;
             this.sprite.body.collideWorldBounds = true;
             this.sprite.frame = 0;
+
+            this.delayedRunVelocity = null;
         },
 
         update: function update() {
@@ -53,37 +51,66 @@ define([
             toPlayer.normalize();
             var vx = toPlayer.x;
             var vy = toPlayer.y;
+
             if (Math.abs(vx) > Math.abs(vy)) {
                 if (vx > 0) {
-                    // right
-                    this.sprite.frame = 1;
+                    this.direction = Constants.DIRECTION.RIGHT;
                 } else {
-                    // left
-                    this.sprite.frame = 2;
+                    this.direction = Constants.DIRECTION.LEFT;
                 }
             } else {
                 if (vy > 0) {
-                    // up
-                    this.sprite.frame = 3;
+                    this.direction = Constants.DIRECTION.DOWN;
                 } else {
-                    // down
-                    this.sprite.frame = 4;
+                    this.direction = Constants.DIRECTION.UP;
                 }
-
             }
 
+            this.sprite.frame = this.direction;
+
+            var collision = false;
             if ((toPlayer.x < 0 && this.isColliding('left')) ||
                     (toPlayer.x > 0 && this.isColliding('right'))) {
                 toPlayer.x = 0;
+                collision = true;
             }
-
             if ((toPlayer.y < 0 && this.isColliding('up')) ||
                     (toPlayer.y > 0 && this.isColliding('down'))) {
                 toPlayer.y = 0;
+                collision = true;
             }
 
-            this.sprite.body.velocity = toPlayer
-                .setMagnitude(RUN_SPEED);
+            toPlayer.setMagnitude(RUN_SPEED);
+
+            /**
+             * Crazy hack to keep enemies from vibrating when there's
+             * a wall between you and them. If something is crazy
+             * glitchy, this is probably why. Here's the logic:
+             *
+             * If you're colliding with one wall but not the other,
+             * and your last update velocity is almost exactly opposite
+             * your current velocity, then just don't move.
+             */
+            if (this.delayedRunVelocity) {
+                var delayedAdd = Phaser.Point.add(
+                    this.delayedRunVelocity,
+                    this.sprite.body.velocity);
+
+                if (collision && (toPlayer.x || toPlayer.y) &&
+                    delayedAdd.getMagnitude() < ANTI_VIBRATE_THRESHOLD) {
+                    // Don't move, you would be vibrating otherwise
+                    this.sprite.body.velocity.x = 0;
+                    this.sprite.body.velocity.y = 0;
+
+                } else {
+                    this.sprite.body.velocity = toPlayer;
+                    this.delayedRunVelocity = this.sprite.body.velocity;
+                }
+
+            } else {
+                this.sprite.body.velocity = toPlayer;
+                this.delayedRunVelocity = this.sprite.body.velocity;
+            }
          },
 
         onWalk: function onWalk() {
@@ -92,37 +119,39 @@ define([
             }
 
             switch (this.direction) {
-                case 'left':
+                case Constants.DIRECTION.LEFT:
                     this.sprite.body.velocity.x = -WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
-                    this.sprite.frame = 2;
                     break;
-                case 'right':
+                case Constants.DIRECTION.RIGHT:
                     this.sprite.body.velocity.x = WALK_SPEED;
                     this.sprite.body.velocity.y = 0;
-                    this.sprite.frame = 1;
                     break;
-                case 'down':
+                case Constants.DIRECTION.DOWN:
                     this.sprite.body.velocity.x = 0;
                     this.sprite.body.velocity.y = WALK_SPEED;
-                    this.sprite.frame = 3;
                     break;
-                case 'up':
+                case Constants.DIRECTION.UP:
                     this.sprite.body.velocity.x = 0;
                     this.sprite.body.velocity.y = -WALK_SPEED;
-                    this.sprite.frame = 4;
                     break;
             }
+
+            this.sprite.frame = this.direction;
         },
 
         changeDirection: function() {
-            var currentDirection,
+            var direction,
                 availableDirections = [];
 
-            for (var i = 0; i < DIRECTIONS.length; i++) {
-                currentDirection = DIRECTIONS[i];
-                if (!this.isColliding(currentDirection)) {
-                    availableDirections.push(currentDirection);
+            for (var directionName in Constants.DIRECTION) {
+                if (directionName === "NONE") {
+                    continue;
+                }
+
+                direction = Constants.DIRECTION[directionName];
+                if (!this.isColliding(Constants.DIRECTION_STR[direction])) {
+                    availableDirections.push(direction);
                 }
             }
 
@@ -135,7 +164,7 @@ define([
         },
 
         isColliding: function isColliding(direction) {
-            direction = direction || this.direction;
+            direction = direction || Constants.DIRECTION_STR[this.direction];
             return (
                 this.sprite.body.blocked[direction] ||
                 this.sprite.body.touching[direction]);

@@ -1,11 +1,11 @@
 define([
     'Base',
-    'Player',
+    'Slimer',
     'Enemy',
     'Door'
 ], function(
     Base,
-    Player,
+    Slimer,
     Enemy,
     Door
 ) {
@@ -26,7 +26,7 @@ define([
 
             //the first parameter is the tileset name as specified in Tiled, the
             //second is the key to the asset
-            this.map.addTilesetImage('tiles', 'game_tiles');
+            this.map.addTilesetImage('new_tiles', 'game_tiles');
             this.background = this.map.createLayer('background');
             this.slimeGroup = this.game.add.group();
 
@@ -34,22 +34,22 @@ define([
             this.background.resizeWorld();
 
             //collision on wall tile
-            this.map.setCollision(3, true, 'background');
+            this.map.setCollisionBetween(9, 25, true, 'background');
 
             // Needed for addPlayer and addEnemies
             this.enemyGroup = this.game.add.group();
             this.enemyGroup.enableBody = true;
 
-            this.addPlayer();
+            this.addSlimer();
             this.addEnemies();
             this.addExit();
         },
 
         update: function() {
-            this.game.physics.arcade.collide(this.player.sprite, this.background);
+            this.game.physics.arcade.collide(this.slimer.sprite, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.background);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
-            this.game.physics.arcade.overlap(this.player.sprite, this.door.sprite,
+            this.game.physics.arcade.overlap(this.slimer.sprite, this.door.sprite,
                 this.winCallback, null, this);
 
             var enemy;
@@ -58,7 +58,7 @@ define([
                 enemy.update();
             }
 
-            this.player.update();
+            this.slimer.update();
         },
 
         slimerFinish: function() {
@@ -77,7 +77,7 @@ define([
                     x: enemyStart.x,
                     y: enemyStart.y,
                     game: this.game,
-                    player: this.player.sprite,
+                    player: this.slimer.sprite,
                     group: this.enemyGroup,
                     slimedEnemies: this.slimedEnemies
                 });
@@ -85,7 +85,7 @@ define([
             }
         },
 
-        addPlayer: function addPlayer() {
+        addSlimer: function addSlimer() {
             var slimeStart = {x: 0, y:0},
                 slimeLocs = this.findObjectsByType('slime_start', 'people');
 
@@ -93,7 +93,7 @@ define([
                 slimeStart = slimeLocs[0];
             }
 
-            this.player = new Player({
+            this.slimer = new Slimer({
                 game: this.game,
                 slimeGroup: this.slimeGroup,
                 x: slimeStart.x,
