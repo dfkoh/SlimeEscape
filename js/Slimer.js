@@ -103,8 +103,12 @@ define([
             this.slimeDistance -= distance.getMagnitude();
 
             if (this.slimeDistance <= 0) {
-                this.slimeGroup.create(this.sprite.body.x, this.sprite.body.y,
-                        'slime_trail');
+                sprite = this.slimeGroup.create(
+                        this.sprite.body.x, this.sprite.body.y, 
+                        'slime_puddle');
+                sprite.animations.add('ooze', null, 4);
+                sprite.animations.play('ooze');
+
                 this.slimeDistance = SLIME_RATE;
             }
         }

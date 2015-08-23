@@ -22,6 +22,8 @@ define([
             this.load.spritesheet('slimer', 'assets/slimer.png', 30, 30);
             this.load.spritesheet('slime_attack', 'assets/slime_attack.png',
                                   32, 32);
+            this.load.spritesheet('slime_puddle', 'assets/slime_puddle.png',
+                                  32, 32);
             this.load.spritesheet('dude', 'assets/dude.png', 30, 30);
             this.load.spritesheet('baddie', 'assets/baddie.png', 30, 30);
             this.load.spritesheet('slimed_baddie', 'assets/slimed_baddie.png',
