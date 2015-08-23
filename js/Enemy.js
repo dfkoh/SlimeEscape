@@ -56,9 +56,9 @@ define([
                 }
             } else {
                 if (vy > 0) {
-                    this.direction = Constants.DIRECTION.UP;
-                } else {
                     this.direction = Constants.DIRECTION.DOWN;
+                } else {
+                    this.direction = Constants.DIRECTION.UP;
                 }
             }
 
