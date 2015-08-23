@@ -17,7 +17,9 @@ define([
 
             this.player = options.player;
             this.group = options.group;
+            this.slimedEnemies = options.slimedEnemies;
             this.slimed = false;
+            this.reanimated = false;
 
             this.sprite = this.group.create(this.startX, this.startY, 'baddie');
             this.sprite.enemy = this;
@@ -28,14 +30,14 @@ define([
         },
 
         update: function update() {
-            if (this.slimed) { return; }
+            if (this.slimed && !this.reanimated) { return; }
 
             var toPlayer = Phaser.Point.subtract(
                     this.player.body.position,
                     this.sprite.body.position);
 
             // If you're in range, run at the player!
-            if (toPlayer.getMagnitude() < TRIGGER_DISTANCE) {
+            if (toPlayer.getMagnitude() < TRIGGER_DISTANCE || this.reanimated) {
                 this.onRun(toPlayer);
             } else {
             // If you're out of range, just wander around
@@ -177,6 +179,13 @@ define([
                     'slimed_baddie');
             this.sprite.frame = frame;
             this.slimed = true;
+            this.slimedEnemies.push(this);
+        },
+
+        reanimate: function(player) {
+            this.player = player.sprite;
+            this.reanimated = true;
+            //RUN_SPEED = 300;
         },
 
         caughtPlayer: function() {
