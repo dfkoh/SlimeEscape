@@ -14,9 +14,7 @@ define([
 
         setup: function setup(options) {
             this.mapName = options.mapName;
-            this.winCallback = options.winCallback || function() {
-                this.game.state.start('win');
-            };
+            this.winState = options.winState || 'win';
         },
 
         create: function() {
@@ -25,14 +23,16 @@ define([
             //the first parameter is the tileset name as specified in Tiled, the
             //second is the key to the asset
             this.map.addTilesetImage('new_tiles', 'game_tiles');
-            this.background = this.map.createLayer('background');
+            this.floor = this.map.createLayer('background');
+            this.walls = this.map.createLayer('walls');
             this.slimeGroup = this.game.add.group();
 
             //resizes the game world to match the layer dimensions
-            this.background.resizeWorld();
+            this.floor.resizeWorld();
+            this.walls.resizeWorld();
 
             //collision on wall tile
-            this.map.setCollisionBetween(9, 25, true, 'background');
+            this.map.setCollisionByExclusion([], true, 'walls');
 
             // Needed for addPlayer and addEnemies
             this.enemyGroup = this.game.add.group();
@@ -44,11 +44,13 @@ define([
         },
 
         update: function() {
-            this.game.physics.arcade.collide(this.slimer.sprite, this.background);
-            this.game.physics.arcade.collide(this.enemyGroup, this.background);
+            this.game.physics.arcade.collide(this.slimer.sprite, this.walls);
+            this.game.physics.arcade.collide(this.enemyGroup, this.walls);
             this.game.physics.arcade.collide(this.enemyGroup, this.enemyGroup);
             this.game.physics.arcade.overlap(this.slimer.sprite, this.door.sprite,
-                this.winCallback, null, this);
+                function() {
+                    this.game.state.start(this.winState);
+                }, null, this);
 
             var enemy;
             for (var i = 0; i < this.enemies.length; i++) {

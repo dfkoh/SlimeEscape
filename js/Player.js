@@ -8,7 +8,6 @@ define([
 
     var MOVE_SPEED = 200;
 
-    console.log('extending position...');
     return Position.extend({
 
         setup: function(options) {

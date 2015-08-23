@@ -11,7 +11,7 @@ define([], function() {
 
     Base.extend = function extend() {
         var extended = function (options) {
-            callIf(this, this.setup, options);
+            callIf(this, this.setup, options || {});
         };
 
         for (var property in this) {
@@ -43,8 +43,6 @@ define([], function() {
                 }
             }
         }
-
-        console.log(extended.prototype);
 
         return extended;
     };
