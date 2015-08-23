@@ -9,6 +9,7 @@ define([
 ) {
 
     var game = new Phaser.Game(32 * 20, 32 * 20, Phaser.AUTO, '');
+    window.game = game;
 
     var loading = new LoadAssets({});
     var win = new EndScreen({message: "You Win!"});
@@ -18,6 +19,7 @@ define([
         mapName: 'level1',
         winState: 'level2'
     });
+    window.level1 = level1;
 
     var level2 = new Engine({
         mapName: 'level2',

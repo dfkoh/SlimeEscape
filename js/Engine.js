@@ -34,6 +34,7 @@ define([
             this.floor = this.map.createLayer('background');
             this.walls = this.map.createLayer('walls');
             this.slimeGroup = this.game.add.group();
+            this.slimeGroup.enableBody = true;
 
             //resizes the game world to match the layer dimensions
             this.floor.resizeWorld();
@@ -96,7 +97,6 @@ define([
                 enemy.reanimate(this.dude);
                 this.enemyGroup.add(enemy.sprite);
             }
-
         },
 
         addEnemies: function addEnemies() {

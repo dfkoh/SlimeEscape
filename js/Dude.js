@@ -16,20 +16,33 @@ define([
 
             this.enemies = options.enemies;
             this.slimeGroup = options.slimeGroup;
-            this.onSlime = false;
+            this.onSlime = null;
 
             this.sprite = this.game.add.sprite(this.startX, this.startY, 'dude');
             this.game.physics.arcade.enable(this.sprite);
             this.sprite.body.collideWorldBounds = true;
         },
 
-        update: function() {
-            var moveSpeed = MOVE_SPEED;
+        stillOnSlime: function stillOnSlime() {
+            return this.game.physics.arcade.intersects(this.sprite.body,
+                    this.onSlime.body);
+        },
+
+        update: function update() {
+            this.moveSpeed = MOVE_SPEED;
+            this.game.physics.arcade.overlap(this.sprite, this.slimeGroup, 
+                    function(dude, slime) { this.onSlime = slime; }, 
+                    null, this);
+
+            if (this.onSlime && !this.stillOnSlime()) { 
+                this.onSlime = null;
+            }
+                
             if (this.onSlime) {
-                moveSpeed = SLIME_MOVE_SPEED;
+                this.moveSpeed = SLIME_MOVE_SPEED;
             }
 
-            Player.prototype.update.apply(this, [moveSpeed]);
+            Player.prototype.update.apply(this);
         }
 
     });
