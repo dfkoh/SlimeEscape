@@ -5,7 +5,7 @@ define([
 ) {
 
     var MOVE_SPEED = 200;
-    var SLIME_RATE = 150;
+    var SLIME_RATE = 70;
     // These match the frames in the sprite
     var DIRECTION = {
         none: 0,

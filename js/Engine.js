@@ -17,6 +17,8 @@ define([
             this.winCallback = options.winCallback || function() {
                 this.game.state.start('win');
             };
+            this.slimedEnemies = [];
+            this.chasingSlimer = false;
         },
 
         create: function() {
@@ -59,6 +61,11 @@ define([
             this.player.update();
         },
 
+        slimerFinish: function() {
+            // TODO: remove unslimed enemies
+            // TODO: activate slimed enemies
+        }
+
         addEnemies: function addEnemies() {
             var enemyLocs = this.findObjectsByType('enemy_start', 'people'),
                 enemy, enemyStart;
@@ -71,7 +78,8 @@ define([
                     y: enemyStart.y,
                     game: this.game,
                     player: this.player.sprite,
-                    group: this.enemyGroup
+                    group: this.enemyGroup,
+                    slimedEnemies: this.slimedEnemies
                 });
                 this.enemies.push(enemy);
             }

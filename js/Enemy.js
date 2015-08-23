@@ -17,6 +17,7 @@ define([
             this.startY = options.y;
             this.group = options.group;
             this.direction = null;
+            this.slimedEnemies = options.slimedEnemies;
             this.slimed = false;
 
             this.create();
@@ -148,6 +149,13 @@ define([
                     'slimed_baddie');
             this.sprite.frame = frame;
             this.slimed = true;
+            this.slimedEnemies.push(this);
+        },
+
+        reanimate: function(player) {
+            this.player = player;
+            this.slimed = false;
+            RUN_SPEED = 300;
         },
 
         caughtPlayer: function() {
