@@ -37,38 +37,52 @@ define([
 
             // If you're in range, run at the player!
             if (toPlayer.getMagnitude() < TRIGGER_DISTANCE) {
+
+                if ((toPlayer.x < 0 && this.isColliding('left')) ||
+                    (toPlayer.x > 0 && this.isColliding('right'))) {
+                    toPlayer.x = 0;
+                }
+
+                if ((toPlayer.y < 0 && this.isColliding('up')) ||
+                    (toPlayer.y > 0 && this.isColliding('down'))) {
+                    toPlayer.y = 0;
+                }
+
                 this.sprite.body.velocity = toPlayer
                     .normalize().setMagnitude(RUN_SPEED);
 
             // If you're out of range, just wander around
             } else {
-
-                if (!this.direction || this.isColliding()) {
-                    this.changeDirection();
-                }
-
-                switch (this.direction) {
-                    case 'left':
-                        this.sprite.body.velocity.x = -WALK_SPEED;
-                        this.sprite.body.velocity.y = 0;
-                        break;
-                    case 'right':
-                        this.sprite.body.velocity.x = WALK_SPEED;
-                        this.sprite.body.velocity.y = 0;
-                        break;
-                    case 'down':
-                        this.sprite.body.velocity.x = 0;
-                        this.sprite.body.velocity.y = WALK_SPEED;
-                        break;
-                    case 'up':
-                        this.sprite.body.velocity.x = 0;
-                        this.sprite.body.velocity.y = -WALK_SPEED;
-                        break;
-                }
+                this.onWalk();
             }
 
             this.game.physics.arcade.overlap(this.player, this.sprite,
                     this.caughtPlayer, null, this);
+        },
+
+        onWalk: function onWalk() {
+            if (!this.direction || this.isColliding()) {
+                this.changeDirection();
+            }
+
+            switch (this.direction) {
+                case 'left':
+                    this.sprite.body.velocity.x = -WALK_SPEED;
+                    this.sprite.body.velocity.y = 0;
+                    break;
+                case 'right':
+                    this.sprite.body.velocity.x = WALK_SPEED;
+                    this.sprite.body.velocity.y = 0;
+                    break;
+                case 'down':
+                    this.sprite.body.velocity.x = 0;
+                    this.sprite.body.velocity.y = WALK_SPEED;
+                    break;
+                case 'up':
+                    this.sprite.body.velocity.x = 0;
+                    this.sprite.body.velocity.y = -WALK_SPEED;
+                    break;
+            }
         },
 
         changeDirection: function() {
@@ -100,7 +114,7 @@ define([
         beSlimed: function() {
             this.sprite.kill();
             this.sprite = this.game.add.sprite(
-                    this.sprite.position.x, this.sprite.position.y, 
+                    this.sprite.position.x, this.sprite.position.y,
                     'slimed_baddie');
             this.slimed = true;
         },

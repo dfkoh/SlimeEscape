@@ -5,7 +5,7 @@ define([
 ) {
 
     var MOVE_SPEED = 200;
-    var SLIME_RATE = 100;
+    var SLIME_RATE = 150;
     // These match the frames in the sprite
     var DIRECTION = {
         none: 0,
@@ -22,7 +22,7 @@ define([
             this.startX = options.x;
             this.startY = options.y;
             this.enemies = options.enemies;
-            this.slimeDistance = 0;
+            this.slimeDistance = SLIME_RATE;
             this.slimeGroup = options.slimeGroup;
 
             this.create();
