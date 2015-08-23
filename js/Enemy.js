@@ -84,7 +84,8 @@ define([
          },
 
         onWalk: function onWalk() {
-            if (!this.direction || this.isColliding()) {
+            if (!this.direction || this.isColliding() ||
+                this.sprite.body.prev.equals(this.sprite.body.position)) {
                 this.changeDirection();
             }
 
@@ -135,10 +136,14 @@ define([
 
         isColliding: function isColliding(direction) {
             direction = direction || Constants.DIRECTION_STR[this.direction];
-            return (
-                this.sprite.body && (
-                this.sprite.body.blocked[direction] ||
-                this.sprite.body.touching[direction]));
+
+            if (!this.sprite || !this.sprite.body) {
+                return false;
+            }
+
+            if (this.sprite.body.blocked[direction]) {
+                return true;
+            }
         },
 
         beSlimed: function() {

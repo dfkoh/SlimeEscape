@@ -13,7 +13,11 @@ define([
         setup: function(options) {
             Enemy.prototype.setup.apply(this, arguments);
 
+            this.originalRun = this.runSpeed;
+            this.originalWalk = this.walkSpeed;
+
             this.zombieGroup = options.zombieGroup;
+            this.slimeGroup = options.slimeGroup;
 
             this.slimedEnemies = options.slimedEnemies;
             this.slimed = false;
@@ -23,11 +27,28 @@ define([
             this.sprite.body.collideWorldBounds = true;
             this.sprite.frame = 0;
 
+            this.onSlime = null;
             this.delayedRunVelocity = null;
         },
 
         update: function update() {
             if (this.slimed) { return; }
+
+            this.game.physics.arcade.overlap(this.sprite, this.slimeGroup,
+                    function(worker, slime) { this.onSlime = slime; },
+                    null, this);
+
+            if (this.onSlime && !this.stillOnSlime()) {
+                this.onSlime = null;
+            }
+
+            if (this.onSlime) {
+                this.runSpeed = Math.floor((this.originalRun*2)/3);
+                this.walkSpeed = Math.floor((this.originalWalk*2)/3);
+            } else {
+                this.runSpeed = this.originalRun;
+                this.walkSpeed = this.originalWalk;
+            }
 
             if (this.player) {
                 var toPlayer = Phaser.Point.subtract(
@@ -48,6 +69,11 @@ define([
             } else {
                 this.onWalk();
             }
+        },
+
+        stillOnSlime: function stillOnSlime() {
+            return this.game.physics.arcade.intersects(this.sprite.body,
+                    this.onSlime.body);
         },
 
         beSlimed: function() {

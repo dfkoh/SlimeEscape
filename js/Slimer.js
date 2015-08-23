@@ -6,17 +6,13 @@ define([
     Constants
 ) {
 
-    var SLIME_RATE = 80,
-        MOVE_SPEED = 80;
-    // These match the frames in the sprite
-
     return Player.extend({
 
         setup: function(options) {
             Player.prototype.setup.apply(this, arguments);
 
             this.enemies = options.enemies;
-            this.slimeDistance = SLIME_RATE;
+            this.slimeDistance = Constants.SLIME_RATE;
             this.slimeGroup = options.slimeGroup;
 
             this.sprite = this.game.add.sprite(this.startX, this.startY, 'slimer');
@@ -109,7 +105,7 @@ define([
                 sprite.animations.add('ooze', null, 4);
                 sprite.animations.play('ooze');
 
-                this.slimeDistance = SLIME_RATE;
+                this.slimeDistance = Constants.SLIME_RATE;
             }
         }
 
