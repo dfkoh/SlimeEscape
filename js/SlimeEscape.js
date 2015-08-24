@@ -16,8 +16,8 @@ define([
     var INTRO_SCRIPT = [
         ["Deep inside a government facility\nin an undisclosed location...", 1500],
         ["An experiment gone horribly wrong\nrampages through the laboratory...", 2000],
-        ["The monster spread toxic waste\nthroughout the lab.", 500],
-        ["And transformed the workers who\ndared approach too close.", 1000],
+        ["The monster spread toxic waste\nthroughout the lab", 1000],
+        ["And transformed the workers who\ndared approach too close\ninto mindless zombies.", 1000],
         ["Now you, intrepid janitor,\nmust catch the monster!", 2000]
     ];
 

@@ -32,6 +32,7 @@ define([
             this.load.spritesheet('slimed_baddie', 'assets/slimed_baddie.png',
                     30, 30);
 
+            this.load.image('slime_background', 'assets/slime_background.png');
             this.load.image('slime_trail', 'assets/slime_trail.png');
             this.load.spritesheet('util_tiles', 'assets/tileset.png', 32, 32);
         },

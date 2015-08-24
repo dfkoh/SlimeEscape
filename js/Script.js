@@ -6,7 +6,8 @@ define([
     var DEFAULT_SCRIPT_SPEED = 50;
     var FONT_STYLE = {
         font: 'jupiter crash',
-        fontSize: '42px'
+        fontSize: '42px',
+        fill: '#ddd'
     };
 
     return Base.extend({
@@ -16,7 +17,9 @@ define([
             this.script = options.script;
         },
         create: function create() {
-            this.game.stage.backgroundColor = '#fff';
+            this.game.add.tileSprite(0, 0, 
+                    this.game.world.width, this.game.world.height,
+                    'slime_background')
             this.shownText = this.game.add.text(
                     70, (this.game.world.height / 2) - 100,
                     "", FONT_STYLE);
