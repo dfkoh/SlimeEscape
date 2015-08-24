@@ -57,14 +57,21 @@ define([
 
     var level3 = new Engine({
         mapName: 'level3',
+        winState: 'level4'
+    });
+
+    var level4 = new Engine({
+        mapName: 'level4',
         winState: 'ending'
     });
+
 
     game.state.add('loading', loading);
     game.state.add('intro', intro);
     game.state.add('level1', level1);
     game.state.add('level2', level2);
     game.state.add('level3', level3);
+    game.state.add('level4', level4);
     game.state.add('ending', ending);
     game.state.add('win', win);
     game.state.add('loss', lose);

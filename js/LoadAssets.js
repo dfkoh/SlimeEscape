@@ -17,6 +17,8 @@ define([
                     null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('level3', 'assets/level3.json',
                     null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('level4', 'assets/level4.json',
+                    null, Phaser.Tilemap.TILED_JSON);
 
             this.load.image('game_tiles', 'assets/background_tiles.png');
             this.load.image('door', 'assets/door.png');

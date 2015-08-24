@@ -20,8 +20,14 @@ define([
             this.mapName = options.mapName;
             this.winState = options.winState || 'win';
             this.winCallback = options.winCallback || function() {
-                this.game.state.start('win');
+                this.game.state.start(this.winState);
             };
+
+        },
+
+        setupSkipLevel: function skipLevel() {
+            var enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+            enterKey.onDown.add(this.winCallback, this);
         },
 
         create: function() {
@@ -53,6 +59,9 @@ define([
             this.addEnemies();
             this.addExit();
             this.dude = null;
+
+            // Uncomment this to debug levels quickly
+            //this.setupSkipLevel();
         },
 
         update: function() {
@@ -73,9 +82,7 @@ define([
             if (this.dude) {
                 this.game.physics.arcade.collide(this.dude.sprite, this.walls);
                 this.game.physics.arcade.overlap(this.dude.sprite, this.door.sprite,
-                        function() {
-                            this.game.state.start(this.winState);
-                        }, null, this);
+                        this.winCallback, null, this);
             }
 
             var enemies = this.getGroupChildren(this.labGroup);
