@@ -88,7 +88,8 @@ define([
                 walkSpeed: Constants.SLIME_ZOMBIE_WALK,
                 x: this.sprite.position.x,
                 y: this.sprite.position.y,
-                frame: frame
+                frame: frame,
+                level: this.level
             });
         }
 

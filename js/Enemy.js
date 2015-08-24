@@ -15,6 +15,7 @@ define([
             this.walkSpeed = options.walkSpeed || Constants.ENEMY_WALK;
             this.player = options.player || null;
             this.group = options.group;
+            this.level = options.level;
         },
 
         onRun: function onRun(toPlayer) {
@@ -151,7 +152,7 @@ define([
         },
 
         caughtPlayer: function() {
-            this.game.state.start('loss');
+            this.game.state.start(this.level);
         }
 
     });

@@ -120,6 +120,7 @@ define([
                     walkSpeed: Constants.LAB_WORKER_WALK,
                     player: this.slimer.sprite,
                     group: this.labGroup,
+                    level: this.mapName,
                     zombieGroup: this.zombieGroup,
                     slimeGroup: this.slimeGroup
                 });
