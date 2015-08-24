@@ -41,7 +41,7 @@ define([
     var loading = new LoadAssets({startState: 'intro'});
     var intro = new Script({nextState: 'level1', script: INTRO_SCRIPT});
     var ending = new Script({nextState: 'win', script: ENDING_SCRIPT});
-    var win = new EndScreen({message: "You Win!"});
+    var win = new EndScreen({message: "You Win!", subtext: "Hit any key to restart"});
     var lose = new EndScreen({message: "You Lose..."});
 
     var level1 = new Engine({
