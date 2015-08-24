@@ -19,6 +19,7 @@ define([
                     null, Phaser.Tilemap.TILED_JSON);
 
             this.load.image('game_tiles', 'assets/background_tiles.png');
+            this.load.image('door', 'assets/door.png');
             this.load.spritesheet('slimer', 'assets/slimer.png', 30, 30);
             this.load.spritesheet('slime_attack', 'assets/slime_attack.png',
                                   32, 32);
