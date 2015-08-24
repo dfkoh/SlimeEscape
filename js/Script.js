@@ -3,7 +3,11 @@ define([
 ], function(
     Base
 ) {
-    var DEFAULT_SCRIPT_SPEED = 75;
+    var DEFAULT_SCRIPT_SPEED = 50;
+    var FONT_STYLE = {
+        font: 'jupiter crash',
+        fontSize: '42px'
+    };
 
     return Base.extend({
         setup: function setup(options) {
@@ -14,8 +18,8 @@ define([
         create: function create() {
             this.game.stage.backgroundColor = '#fff';
             this.shownText = this.game.add.text(
-                    100, (this.game.world.height / 2) - 100,
-                    "");
+                    70, (this.game.world.height / 2) - 100,
+                    "", FONT_STYLE);
             this.running = false;
             var spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             spacebar.onDown.add(function() {

@@ -14,26 +14,26 @@ define([
     window.game = game;
 
     var INTRO_SCRIPT = [
-        ["Deep inside a government facility\nin an undisclosed location", 1500],
-        ["An experiment gone horribly wrong\nrampages through the laboratory", 2000],
-        ["The monster spread toxic waste\nthroughout the lab", 500],
-        ["And transformed the workers\nwho dared approach too close", 1000],
-        ["Now you, intrepid janitor\nmust catch the monster!", 2000]
+        ["Deep inside a government facility\nin an undisclosed location...", 1500],
+        ["An experiment gone horribly wrong\nrampages through the laboratory...", 2000],
+        ["The monster spread toxic waste\nthroughout the lab.", 500],
+        ["And transformed the workers who\ndared approach too close.", 1000],
+        ["Now you, intrepid janitor,\nmust catch the monster!", 2000]
     ];
 
     var ENDING_SCRIPT = [
-        ["Janitor: Ha, I finally caught you!", 1000],
-        ["Slime: Where did you come from?", 700],
-        ["Janitor: I followed you from lab 32J.", 700],
-        ["Slime: What do you want?", 1000],
-        ["Janitor: Oh, I noticed you dropped\nyour keys in the elevator.", 1500],
-        ["Slime: Ah, I was wondering\nwhere those went.", 1000],
+        ["Janitor: Ha, I finally caught you!", 1300],
+        ["Slime: Where did you come from?", 1000],
+        ["Janitor: I followed you from lab 32J.", 1000],
+        ["Slime: What do you want?", 1200],
+        ["Janitor: Oh, I noticed you dropped\nyour keys in the elevator.", 2000],
+        ["Slime: Ah, I was wondering\nwhere those went.", 1300],
         ["Slime: Thanks!", 500],
         ["Janitor: Long day at work?", 1000],
-        ["Slime: Yeah, first I messed\nup my experiment,\nand then I had to slime\na whole bunch of people\non my way out.", 2000],
+        ["Slime: Yeah, first I messed up\nmy experiment, and then I had\nto slime a whole bunch of people\non my way out.", 2500],
         ["Janitor: Mondays, am I right?", 2000],
-        ["Slime: Yeah.", 700],
-        ["Janitor: Anyway, have a good night!", 1000],
+        ["Slime: Yeah.", 500],
+        ["Janitor: Anyway, have a good night!", 1200],
         ["Slime: You too. Thanks again!", 3000]
     ];
 
